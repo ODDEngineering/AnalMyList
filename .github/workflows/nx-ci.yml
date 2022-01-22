@@ -1,0 +1,49 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - name: Checking out main branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - name: Setting up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Installing dependencies
+        run: npm ci
+      - name: Builing Apps
+        run: npx nx affected --target=build --parallel --max-parallel=3
+      - name: Testing Apps
+        run: npx nx affected --target=test --parallel --max-parallel=2
+  pr:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Checking out PR branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - name: Setting up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Installing dependencies
+        run: npm ci
+      - name: Builing Apps
+        run: npx nx affected --target=build --parallel --max-parallel=3
+      - name: Testing Apps
+        run: npx nx affected --target=test --parallel --max-parallel=2
