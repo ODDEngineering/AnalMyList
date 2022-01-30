@@ -1,1 +1,1 @@
-web: bin/start-nginx nx run api:serve
+web: bin/start-nginx node dist/apps/api/main.js

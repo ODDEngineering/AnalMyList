@@ -33,6 +33,14 @@ http {
 		keepalive_timeout 5;
 		client_max_body_size <%= ENV['NGINX_CLIENT_MAX_BODY_SIZE'] || 1 %>M;
 
-		root /app/dist/webapp; # path to your app
+		root /app/dist/apps/webapp;
+		index  index.html index.htm;
+
+        location /api/ {
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $http_host;
+			proxy_redirect off;
+			proxy_pass http://localhost:3333/api/;
+		}
 	}
 }
