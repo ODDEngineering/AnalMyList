@@ -1,4 +1,9 @@
 {
+    "name": "AnalMyList",
+    "scripts": {},
+    "env": {},
+    "formation": {},
+    "addons": [],
     "buildpacks": [
         {
             "url": "heroku/nodejs"
@@ -6,5 +11,6 @@
         {
             "url": "heroku-community/nginx"
         }
-    ]
-}
+    ],
+    "stack": "heroku-20"
+  }
