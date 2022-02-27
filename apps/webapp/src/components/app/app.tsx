@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Message } from '@anal-my-list/api-interfaces';
+import { Provider } from 'react-redux';
+import { store } from '../../state';
 
 export const App = () => {
   const [m, setMessage] = useState<Message>({ message: '' });
@@ -11,17 +13,19 @@ export const App = () => {
   }, []);
 
   return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to webapp!</h1>
-        <img
-          width="450"
-          src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-          alt="Nx - Smart, Fast and Extensible Build System"
-        />
-      </div>
-      <div>{m.message}</div>
-    </>
+    <Provider store={store}>
+      <>
+        <div style={{ textAlign: 'center' }}>
+          <h1>Welcome to webapp!</h1>
+          <img
+            width="450"
+            src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
+            alt="Nx - Smart, Fast and Extensible Build System"
+          />
+        </div>
+        <div>{m.message}</div>
+      </>
+    </Provider>
   );
 };
 
