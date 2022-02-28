@@ -53,7 +53,7 @@ To get started, make sure you clone and install all dependencies by running the 
   - Playlist API
   - Songs Meta Data API
 
-### March 1st - Minimum Viable Product Finished
+### March 15th - Minimum Viable Product Finished
 - MVP supports logging in, selecting playlist and showing result
 - Start work on Machine Learning
 - Polish project and prepare for launch
