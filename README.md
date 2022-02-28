@@ -1,94 +1,63 @@
+# AnalMyList - Analyze My Playlist
+The goal of this project is to create a full stack web application for analyzing spotify playlist. This project uses Nx as a mono repo and take advantage of Heroku pipeline to create a dev snapshots, staging and production. Because it is a mono repo, it contains both the backend and frontend codes, which allows Heroku to package everything up as a single full stack application.
 
+## Mono Repo
+Using Nx as the mono repo framework allows us to keep both frontend and backend code within the same repository but still compile and perform just as fast as separate repo. On top of that, this allows code and depdencency sharings that improve build time both locally and in CI/CD.
 
-# AnalMyList
+### Front-end / webapp
+The frontend webapp is a SPA built with React and Redux.
 
-This project was generated using [Nx](https://nx.dev).
+### Back-end / api
+The backend application is a simple Express NodeJS application that provide API interfaces and process tasks for analyzing playlist.
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Heroku
+Heroku Platform is easy to use and allows for easy scaling. There is a free-tier we can use while developing and still very affortable when moving into production.
 
-🔎 **Smart, Fast and Extensible Build System**
+### Pipeline
+The ability to create a snapshot on every PR is a huge benefits for development. Furthermore, the integration with GitHub create a full automated CI/CD with little to no interaction from developers.
 
-## Adding capabilities to your workspace
+There is also different environments for dev, staging and production. Moving a new version of the application from staging to production is a simple promote command with virtually no downtime.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+### Add-ons
+There are numerous addons provided by Heroku that we can take advantages of, such as PosgreSQL for database and Redis for cache.
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+## Guide
+To get started, make sure you clone and install all dependencies by running the command
 
-Below are our core plugins:
+`$ npm install`
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+### Build Project
+`$ nx affected --target=build`
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+### Test Project
+`$ nx affected --target=test`
 
-## Generate an application
+### Running Project
+`$ nx run api:serve`
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+`$ nx run webapp:serve`
 
-> You can use any of the plugins above to generate applications as well.
+## Road Map
+### February 1st - Project Initialized
+- Start work on Frontend webapp
+  - Login Page
+  - Playlist Selection
+  - Result Page
+- Start work on Backend api server
+  - Provide Auth API
+  - Provide Playlist Selection API
+  - Support Playlist Analyzation
+  - Provide Result API
+- Support Spotify API
+  - Auth API
+  - Playlist API
+  - Songs Meta Data API
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@anal-my-list/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+### March 15th - Minimum Viable Product Finished
+- MVP supports logging in, selecting playlist and showing result
+- Start work on Machine Learning
+- Polish project and prepare for launch
+### April 1st - Product Launched
+- Monitor and Scale as needed
+- Add support for Apple Music
+- Mobile App Support
