@@ -2,29 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Message } from '@anal-my-list/api-interfaces';
 import { Provider } from 'react-redux';
 import { store } from '../../state';
+import { Home } from '../home'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { About } from '../about';
 
 export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
-
-  useEffect(() => {
-    fetch('/api/')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
 
   return (
     <Provider store={store}>
-      <>
-        <div style={{ textAlign: 'center' }}>
-          <h1>Welcome to webapp!</h1>
-          <img
-            width="450"
-            src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-            alt="Nx - Smart, Fast and Extensible Build System"
-          />
-        </div>
-        <div>{m.message}</div>
-      </>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path='/about' element={<About />} />
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 };
