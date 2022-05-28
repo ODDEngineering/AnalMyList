@@ -1,20 +1,20 @@
-import { cleanup, getByText, render, waitFor } from '@testing-library/react';
-import React from 'react';
-import App from './app';
+import { cleanup, getByText, render, waitFor } from '@testing-library/react'
+import React from 'react'
+import App from './app'
 
 describe('App', () => {
   afterEach(() => {
-    cleanup();
-  });
+    cleanup()
+  })
 
   it('should render successfully', async () => {
     global['fetch'] = jest.fn().mockResolvedValueOnce({
       json: () => ({
         message: 'my message',
       }),
-    });
+    })
 
-    const { baseElement }  = render(<App />);
-    await waitFor(() => getByText(baseElement as HTMLElement, 'my message'));
-  });
-});
+    const { baseElement } = render(<App />)
+    await waitFor(() => getByText(baseElement as HTMLElement, 'my message'))
+  })
+})
