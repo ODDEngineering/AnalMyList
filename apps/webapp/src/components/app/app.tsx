@@ -5,6 +5,7 @@ import { store } from '../../state'
 import { Home } from '../home'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { About } from '../about'
+import { Login } from '../login'
 
 export const App = () => {
   return (
@@ -12,7 +13,8 @@ export const App = () => {
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </BrowserRouter>
     </Provider>
