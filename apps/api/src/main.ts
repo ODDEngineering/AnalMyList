@@ -2,6 +2,8 @@ import * as express from 'express'
 import * as fs from 'fs'
 import { Message } from '@anal-my-list/api-interfaces'
 
+import * as database from './app/database'
+
 const app = express()
 
 const greeting: Message = { message: 'Welcome to api!' }
@@ -16,9 +18,11 @@ app.get('/api/greeting', (req, res) => {
 
 const port = process.env.port || 3333
 const server = app.listen(port, () => {
+  database.init()
   if (process.env.DYNO) {
     fs.openSync('/tmp/app-initialized', 'w')
   }
   console.log('Listening at http://localhost:' + port + '/api/')
 })
 server.on('error', console.error)
+process.on('SIGTERM', database.shutdown)
