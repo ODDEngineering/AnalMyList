@@ -25,4 +25,13 @@ const server = app.listen(port, () => {
   console.log('Listening at http://localhost:' + port + '/api/')
 })
 server.on('error', console.error)
-process.on('SIGTERM', database.shutdown)
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM signal received\nShutting down server...')
+  server.close(() => {
+    console.log('Server shutdown')
+  })
+  console.log('Shutting down database...')
+  await database.shutdown()
+  console.log('Database shutdown\nProcess gracefully ended')
+  process.exit(0)
+})
