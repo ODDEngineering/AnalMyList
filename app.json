@@ -1,16 +1,16 @@
 {
-    "name": "AnalMyList",
-    "scripts": {},
-    "env": {},
-    "formation": {},
-    "addons": ["heroku-postgresql:hobby-dev"],
-    "buildpacks": [
-        {
-            "url": "heroku/nodejs"
-        },
-        {
-            "url": "heroku-community/nginx"
-        }
-    ],
-    "stack": "heroku-20"
-  }
+  "name": "AnalMyList",
+  "scripts": {},
+  "env": {},
+  "formation": {},
+  "addons": ["heroku-postgresql:hobby-dev", "papertrail:choklad"],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku-community/nginx"
+    }
+  ],
+  "stack": "heroku-20"
+}

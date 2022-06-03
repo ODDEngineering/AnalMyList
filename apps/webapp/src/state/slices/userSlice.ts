@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface userState {
-  loggedin: boolean,
-  username: string,
+  loggedin: boolean
+  username: string
 }
 
 const initialUserState: userState = {
   loggedin: false,
-  username: ''
+  username: '',
 }
 
 export const userSlice = createSlice({
@@ -21,6 +21,6 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.loggedin = false
       state.username = ''
-    }
-  }
+    },
+  },
 })

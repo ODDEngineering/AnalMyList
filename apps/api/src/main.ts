@@ -1,24 +1,37 @@
-import * as express from 'express';
-import * as fs from 'fs';
-import { Message } from '@anal-my-list/api-interfaces';
+import * as express from 'express'
+import * as fs from 'fs'
+import { Message } from '@anal-my-list/api-interfaces'
 
-const app = express();
+import * as database from './app/database'
 
-const greeting: Message = { message: 'Welcome to api!' };
+const app = express()
+
+const greeting: Message = { message: 'Welcome to api!' }
 
 app.get('/api/', (req, res) => {
-  res.send(greeting);
-});
+  res.send(greeting)
+})
 
 app.get('/api/greeting', (req, res) => {
-  res.send(greeting);
-});
+  res.send(greeting)
+})
 
-const port = process.env.port || 3333;
+const port = process.env.port || 3333
 const server = app.listen(port, () => {
+  database.init()
   if (process.env.DYNO) {
-    fs.openSync('/tmp/app-initialized', 'w');
+    fs.openSync('/tmp/app-initialized', 'w')
   }
-  console.log('Listening at http://localhost:' + port + '/api/');
-});
-server.on('error', console.error);
+  console.log('Listening at http://localhost:' + port + '/api/')
+})
+server.on('error', console.error)
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM signal received\nShutting down server...')
+  server.close(() => {
+    console.log('Server shutdown')
+  })
+  console.log('Shutting down database...')
+  await database.shutdown()
+  console.log('Database shutdown\nProcess gracefully ended')
+  process.exit(0)
+})

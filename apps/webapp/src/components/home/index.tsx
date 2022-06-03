@@ -1,14 +1,14 @@
-import { Message } from '@anal-my-list/api-interfaces';
+import { Message } from '@anal-my-list/api-interfaces'
 import React from 'react'
 
 export const Home = (): JSX.Element => {
-  const [m, setMessage] = React.useState<Message>({ message: '' });
+  const [m, setMessage] = React.useState<Message>({ message: '' })
 
   React.useEffect(() => {
     fetch('/api/')
       .then((r) => r.json())
-      .then(setMessage);
-  }, []);
+      .then(setMessage)
+  }, [])
 
   return (
     <div style={{ textAlign: 'center' }}>
