@@ -1,8 +1,10 @@
 import * as express from 'express'
 import * as fs from 'fs'
-import { Message } from '@anal-my-list/api-interfaces'
+import type { Message } from '@anal-my-list/api-interfaces'
 
 import * as database from './app/database'
+import { shutdown } from './app/util'
+import type { ShutdownFunction } from './app/util'
 
 const app = express()
 
@@ -25,13 +27,16 @@ const server = app.listen(port, () => {
   console.log('Listening at http://localhost:' + port + '/api/')
 })
 server.on('error', console.error)
-process.on('SIGTERM', async () => {
-  console.log('SIGTERM signal received\nShutting down server...')
-  server.close(() => {
-    console.log('Server shutdown')
-  })
-  console.log('Shutting down database...')
-  await database.shutdown()
-  console.log('Database shutdown\nProcess gracefully ended')
-  process.exit(0)
+process.on('SIGINT', () => {
+  console.log('SIGINT signal received')
+  const disconnectDatabase: ShutdownFunction = {
+    fn: database.disconnect
+  }
+  const shutdownServer: ShutdownFunction = {
+    fn: () => new Promise((resolve) => server.close(() => {
+      console.log('HTTP Server shutdown')
+      return resolve
+    }))
+  }
+  shutdown([disconnectDatabase, shutdownServer])
 })
