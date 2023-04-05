@@ -5,67 +5,19 @@ on:
       - main
   pull_request:
 
-env:
-  NX_CLOUD_DISTRIBUTED_EXECUTION: true
-
 jobs:
   main:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
-    steps:
-      - name: Checking out main branch
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-      - name: Setting up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: Installing dependencies
-        run: npm ci
-      - run: npx nx-cloud start-ci-run
-      - name: Builing Apps
-        run: npx nx affected --target=build --parallel --max-parallel=3
-      - name: Testing Apps
-        run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx-cloud stop-all-agents
-  pr:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - name: Checking out PR branch
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-      - name: Setting up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: Installing dependencies
-        run: npm ci
-      - run: npx nx-cloud start-ci-run
-      - name: Builing Apps
-        run: npx nx affected --target=build --parallel --max-parallel=3
-      - name: Testing Apps
-        run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx-cloud stop-all-agents
+    name: Nx Cloud - Main Job
+    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
+    with:
+      number-of-agents: 3
+      parallel-commands: |
+        npx nx-cloud record -- npx nx format:check
+      parallel-commands-on-agents: |
+        npx nx affected -t lint --parallel=3 & npx nx affected -t test --parallel=3 --configuration=ci & npx nx affected -t build --parallel=3
+
   agents:
-    runs-on: ubuntu-latest
-    name: Agent 1
-    timeout-minutes: 60
-    strategy:
-      matrix:
-        agent: [1, 2, 3]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - run: npm ci
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
+    name: Nx Cloud - Agents
+    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11.3
+    with:
+      number-of-agents: 3
