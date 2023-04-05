@@ -8,7 +8,7 @@
     "test": "nx test"
   },
   "engines": {
-    "node": "^16.13.2"
+    "node": "^18.15.0"
   },
   "private": true,
   "dependencies": {
